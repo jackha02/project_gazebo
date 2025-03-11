@@ -35,7 +35,7 @@ __copyright__ = 'Copyright (c) 2024 Universidad Politécnica de Madrid'
 __license__ = 'BSD-3-Clause'
 
 import argparse
-import json
+import time
 
 import rclpy
 
@@ -44,7 +44,7 @@ from as2_python_api.mission_interpreter.mission_interpreter import MissionInterp
 
 TAKE_OFF_HEIGHT = 1.0  # Height in meters
 TAKE_OFF_SPEED = 1.0  # Max speed in m/s
-SLEEP_TIME = 0.5  # Sleep time between behaviors in seconds
+SLEEP_TIME = 1.0  # Sleep time between behaviors in seconds
 SPEED = 1.0  # Max speed in m/s
 HEIGHT = 1.0  # Height in meters
 DIM = 2.0
@@ -82,8 +82,6 @@ if __name__ == '__main__':
     mission_json = f"""
     {{
         "target": "{drone_namespace}",
-        "verbose": "{verbosity}",
-        "use_sim_time": "{use_sim_time}",
         "plan": [
             {{
                 "behavior": "takeoff", 
@@ -144,19 +142,23 @@ if __name__ == '__main__':
 
     mission = Mission.parse_raw(mission_json)
 
-    print(f"Mission to be executed: {mission}")
-
     rclpy.init()
 
     interpreter = MissionInterpreter(
-        mission=mission,
-        use_sim_time=use_sim_time)
-    
+        use_sim_time=use_sim_time,
+        verbose=args.verbose)
+    interpreter.load_mission(0, mission)
+
     print('Start mission')
     interpreter.drone.arm()
     interpreter.drone.offboard()
     print('Run mission')
-    interpreter.perform_mission()
+    interpreter.start_mission(0)
+    while interpreter.status.pending_items != 0 or \
+            interpreter.current_behavior is not None:
+        print(f"Performing {interpreter.current_behavior.__alias__} at {interpreter.feedback}")
+        print(f"Pending items: {interpreter.status.pending_items}")
+        time.sleep(SLEEP_TIME)
 
     print("Mission completed")
     interpreter.shutdown()
