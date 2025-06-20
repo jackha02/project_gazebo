@@ -1,4 +1,4 @@
-world_name: "empty"
+world_name: "jacket"
 origin: 
     latitude: 40.4405287
     longitude: -3.6898277
@@ -10,7 +10,7 @@ drones:
     xyz:
       - 0.0
       - 0.0
-      - 0.3
+      - 5.0
     payload:
       - model_type: "gps"
         model_name: "gps"
@@ -19,3 +19,5 @@ drones:
         payload:
           model_type: "hd_camera"
           model_name: "camera"
+
+
