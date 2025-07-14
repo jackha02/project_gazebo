@@ -39,6 +39,7 @@ from time import sleep
 from as2_python_api.drone_interface import DroneInterface
 import rclpy
 import csv
+import math
 
 def load_path_from_csv(file_path):
     path = []
@@ -58,6 +59,14 @@ SPEED = 1.0  # Max speed in m/s
 PATH = load_path_from_csv("config/joints.csv")
 LAND_SPEED = 0.5  # Max speed in m/s
 
+
+def compute_yaw_towards_center(x, y, cx, cy):
+    return math.atan2(cy - y, cx - x)
+
+# Define the model center (cx, cy). You can hardcode or load these values as needed.
+# For now, we will compute them from the PATH as in the CSV generator.
+cx = sum([p[0] for p in PATH]) / len(PATH)
+cy = sum([p[1] for p in PATH]) / len(PATH)
 
 def drone_start(drone_interface: DroneInterface) -> bool:
     """
@@ -95,10 +104,12 @@ def drone_run(drone_interface: DroneInterface) -> bool:
     """
     print('Run mission')
 
-    # Go to path facing
+    # Go to path facing the model center
     for goal in PATH:
-        print(f'Go to with path facing {goal}')
-        success = drone_interface.go_to.go_to_point_path_facing(goal, speed=SPEED)
+        x, y, z = goal
+        yaw = compute_yaw_towards_center(x, y, cx, cy)
+        print(f'Go to {goal} Facing the structure (yaw={yaw})')
+        success = drone_interface.go_to.go_to_point_with_yaw([x, y, z], speed=SPEED, angle=yaw)
         print(f'Go to success: {success}')
         if not success:
             return success
