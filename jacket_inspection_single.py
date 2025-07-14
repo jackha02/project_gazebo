@@ -38,19 +38,24 @@ import argparse
 from time import sleep
 from as2_python_api.drone_interface import DroneInterface
 import rclpy
+import csv
 
-TAKE_OFF_HEIGHT = 1.0  # Height in meters
+def load_path_from_csv(file_path):
+    path = []
+    with open(file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            x = float(row['x'])
+            y = float(row['y'])
+            z = float(row['z'])
+            path.append([x, y, z])
+    return path
+
+TAKE_OFF_HEIGHT = 0.5  # Height in meters
 TAKE_OFF_SPEED = 1.0  # Max speed in m/s
 SLEEP_TIME = 0.5  # Sleep time between behaviors in seconds
 SPEED = 1.0  # Max speed in m/s
-HEIGHT = 1.0  # Height in meters
-DIM = 2.0
-PATH = [
-    [-DIM, DIM, HEIGHT],
-    [-DIM, -DIM, HEIGHT],
-    [DIM, -DIM, HEIGHT],
-    [DIM, DIM, HEIGHT]
-]
+PATH = load_path_from_csv("config/joints.csv")
 LAND_SPEED = 0.5  # Max speed in m/s
 
 
@@ -89,16 +94,6 @@ def drone_run(drone_interface: DroneInterface) -> bool:
     :return: Bool indicating if the mission was successful
     """
     print('Run mission')
-
-    # Go to path with keep yaw
-    for goal in PATH:
-        print(f'Go to with keep yaw {goal}')
-        success = drone_interface.go_to.go_to_point(goal, speed=SPEED)
-        print(f'Go to success: {success}')
-        if not success:
-            return success
-        print('Go to done')
-        sleep(SLEEP_TIME)
 
     # Go to path facing
     for goal in PATH:

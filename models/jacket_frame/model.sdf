@@ -12,7 +12,7 @@
     </link>
     <!-- Four vertical legs -->
     <link name="leg1">
-      <pose>-1 -1 1 0 0 0</pose>
+      <pose>2 -1 1 0 0 0</pose>
       <visual name="visual_leg1">
         <geometry>
           <cylinder>
@@ -39,7 +39,7 @@
     </link>
 
     <link name="leg2">
-      <pose>1 -1 1 0 0 0</pose>
+      <pose>4 -1 1 0 0 0</pose>
       <visual name="visual_leg2">
         <geometry>
           <cylinder>
@@ -66,7 +66,7 @@
     </link>
 
     <link name="leg3">
-      <pose>-1 1 1 0 0 0</pose>
+      <pose>2 1 1 0 0 0</pose>
       <visual name="visual_leg3">
         <geometry>
           <cylinder>
@@ -93,7 +93,7 @@
     </link>
 
     <link name="leg4">
-      <pose>1 1 1 0 0 0</pose>
+      <pose>4 1 1 0 0 0</pose>
       <visual name="visual_leg4">
         <geometry>
           <cylinder>
@@ -120,9 +120,9 @@
     </link>
 
     <!-- Top horizontal connectors -->
-    <link name="top_x">
-      <pose>0 1 2 0 1.5708 0</pose>
-      <visual name="visual_topx">
+    <link name="top_12">
+      <pose>3 1 2 0 1.5708 0</pose>
+      <visual name="visual_top12">
         <geometry>
           <cylinder>
             <radius>0.03</radius>
@@ -130,7 +130,7 @@
           </cylinder>
         </geometry>
       </visual>
-      <collision name="collision_topx">
+      <collision name="collision_top12">
         <geometry>
           <cylinder>
             <radius>0.03</radius>
@@ -147,9 +147,35 @@
       </inertial>
     </link>
 
-    <link name="top_y">
-      <pose>1 0 2 1.5708 0 0</pose>
-      <visual name="visual_topy">
+    <link name="top_24">
+      <pose>4 0 2 1.5708 0 0</pose>
+      <visual name="visual_top24">
+        <geometry>
+          <cylinder>Set the drone starting 
+            <radius>0.03</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+      </visual>
+      <collision name="collision_top24">
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass>0.5</mass>
+        <inertia>
+          <ixx>0.5</ixx><iyy>0.5</iyy><izz>0.5</izz>
+          <ixy>0.0</ixy><ixz>0.0</ixz><iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+    </link>
+        <link name="top_43">
+      <pose>3 -1 2 0 1.5708 0</pose>
+      <visual name="visual_top43">
         <geometry>
           <cylinder>
             <radius>0.03</radius>
@@ -157,7 +183,34 @@
           </cylinder>
         </geometry>
       </visual>
-      <collision name="collision_topy">
+      <collision name="collision_top43">
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass>0.5</mass>
+        <inertia>
+          <ixx>0.5</ixx><iyy>0.5</iyy><izz>0.5</izz>
+          <ixy>0.0</ixy><ixz>0.0</ixz><iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+    </link>
+
+    <link name="top_31">
+      <pose>2 0 2 1.5708 0 0</pose>
+      <visual name="visual_top31">
+        <geometry>
+          <cylinder>Set the drone starting 
+            <radius>0.03</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+      </visual>
+      <collision name="collision_top31">
         <geometry>
           <cylinder>
             <radius>0.03</radius>
@@ -189,14 +242,22 @@
       <parent>base_link</parent>
       <child>leg4</child>
     </joint>
-    <joint name="joint_top_x" type="fixed">
+    <joint name="joint_top_12" type="fixed">
       <parent>base_link</parent>
-      <child>top_x</child>
+      <child>top_12</child>
     </joint>
-    <joint name="joint_top_y" type="fixed">
+    <joint name="joint_top_24" type="fixed">
       <parent>base_link</parent>
-      <child>top_y</child>
-    </joint>    
+      <child>top_24</child>
+    </joint>
+    <joint name="joint_top_43" type="fixed">
+      <parent>base_link</parent>
+      <child>top_43</child>
+    </joint>   
+    <joint name="joint_top_31" type="fixed">
+      <parent>base_link</parent>
+      <child>top_31</child>
+    </joint>       
   </model>
 </sdf>
 

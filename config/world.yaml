@@ -1,4 +1,4 @@
-world_name: "jacket"
+world_name: "jckt"
 origin: 
     latitude: 40.4405287
     longitude: -3.6898277
@@ -8,9 +8,9 @@ drones:
     model_name: "drone0"
     flight_time: 60
     xyz:
+      - -15.0
       - 0.0
       - 0.0
-      - 5.0
     payload:
       - model_type: "gps"
         model_name: "gps"
